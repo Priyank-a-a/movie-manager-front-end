@@ -119,7 +119,7 @@ export default function LoginPage() {
                   Logging in...
                 </>
               ) : ( */}
-              "Login"
+              Login
               {/* )} */}
             </button>
           </Form>

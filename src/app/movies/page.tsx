@@ -4,6 +4,7 @@ import {
   useCreateMovieMutation,
   useUpdateMovieMutation,
   useDeleteMovieMutation,
+  useUploadPosterMutation,
 } from "@/services/api";
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -37,6 +38,7 @@ export default function MoviesPage() {
   const [createMovie, { isLoading: isCreating }] = useCreateMovieMutation();
   const [updateMovie, { isLoading: isUpdating }] = useUpdateMovieMutation();
   const [deleteMovie, { isLoading: isDeleting }] = useDeleteMovieMutation();
+  const [uploadPoster] = useUploadPosterMutation();
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -54,7 +56,12 @@ export default function MoviesPage() {
         id: String(m.id),
         title: m.title,
         publishingYear: m.publishing_year ?? m.publishingYear,
-        poster: m.poster ?? "",
+        poster:
+          typeof m.poster === "string"
+            ? m.poster.startsWith("/")
+              ? `http://localhost:3001${m.poster}`
+              : m.poster
+            : "",
       }));
 
   const itemsPerPage = 4;
@@ -80,13 +87,23 @@ export default function MoviesPage() {
   const handleAddMovieSubmit = async (movieData: MovieFormData) => {
     console.log(movieData);
     try {
-      // Poster upload handling is not implemented; send basic fields
+      let posterUrl: string | undefined = undefined;
+      if (movieData.poster instanceof File) {
+        const fd = new FormData();
+        fd.append("file", movieData.poster);
+        const res = await uploadPoster(fd).unwrap();
+        posterUrl = res.url.startsWith("http")
+          ? res.url
+          : `http://localhost:3001${res.url}`;
+      } else if (typeof movieData.poster === "string" && movieData.poster) {
+        posterUrl = movieData.poster;
+      }
+
+      // 2) Create movie with poster URL
       await createMovie({
         title: movieData.title,
         publishingYear: movieData.publishing_year,
-        ...(typeof movieData.poster === "string" && movieData.poster
-          ? { poster: movieData.poster }
-          : {}),
+        ...(posterUrl ? { poster: posterUrl } : {}),
       }).unwrap();
       setIsAddModalOpen(false);
     } catch (e) {
@@ -97,14 +114,24 @@ export default function MoviesPage() {
   const handleEditMovieSubmit = async (movieData: MovieFormData) => {
     if (!selectedMovie) return;
     try {
+      let posterUrl: string | undefined = undefined;
+      if (movieData.poster instanceof File) {
+        const fd = new FormData();
+        fd.append("file", movieData.poster);
+        const res = await uploadPoster(fd).unwrap();
+        posterUrl = res.url.startsWith("http")
+          ? res.url
+          : `http://localhost:3001${res.url}`;
+      } else if (typeof movieData.poster === "string" && movieData.poster) {
+        posterUrl = movieData.poster;
+      }
+
       await updateMovie({
         id: selectedMovie.id,
         data: {
           title: movieData.title,
-          publishing_year: movieData.publishing_year,
-          ...(typeof movieData.poster === "string" && movieData.poster
-            ? { poster: movieData.poster }
-            : {}),
+          publishingYear: movieData.publishing_year,
+          ...(posterUrl ? { poster: posterUrl } : {}),
         },
       }).unwrap();
       setIsEditModalOpen(false);
@@ -140,13 +167,12 @@ export default function MoviesPage() {
     return (
       <div className="movies-container">
         <div className="empty-state">
-          <h1>Failed to load movies </h1>
+          <h1>Failed to load movies</h1>
         </div>
       </div>
     );
   }
 
-  // Empty state
   if (movies.length === 0) {
     return (
       <div className="movies-container">
@@ -157,7 +183,6 @@ export default function MoviesPage() {
           </button>
         </div>
 
-        {/* Wave effect at the bottom */}
         <div className="wave-container">
           <svg
             data-name="Layer 1"
@@ -172,7 +197,6 @@ export default function MoviesPage() {
           </svg>
         </div>
 
-        {/* Add Movie Modal */}
         <MovieModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
@@ -183,7 +207,6 @@ export default function MoviesPage() {
     );
   }
 
-  // Movies grid layout
   return (
     <div className="movies-container">
       <div className="movies-header">
@@ -216,15 +239,12 @@ export default function MoviesPage() {
               ×
             </button>
             <div className="movie-poster-container">
-              {
-                <Image
-                  src={"/public /movie-poster.png"}
-                  alt={movie.title}
-                  width={220}
-                  height={300}
-                  className="movie-poster"
-                />
-              }
+              <img
+                src={movie.poster || "/moviePoster.png"}
+                height={300}
+                width={220}
+                alt={movie.title}
+              />
             </div>
             <div className="movie-info">
               <h3 className="movie-title">{movie.title}</h3>
@@ -234,7 +254,6 @@ export default function MoviesPage() {
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="pagination">
           <button
@@ -265,7 +284,6 @@ export default function MoviesPage() {
         </div>
       )}
 
-      {/* Wave effect at the bottom */}
       <div className="wave-container">
         <svg
           data-name="Layer 1"

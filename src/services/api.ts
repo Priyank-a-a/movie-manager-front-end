@@ -32,6 +32,15 @@ export const api = createApi({
           : [{ type: "Movies" as const, id: "LIST" }],
     }),
 
+    // Upload poster file, returns { url: string }
+    uploadPoster: builder.mutation<{ url: string }, FormData>({
+      query: (formData) => ({
+        url: "/movies/upload",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+
     createMovie: builder.mutation<any, Partial<any>>({
       query: (body) => ({
         url: "/movies",
@@ -85,5 +94,6 @@ export const {
   useCreateMovieMutation,
   useUpdateMovieMutation,
   useDeleteMovieMutation,
+  useUploadPosterMutation,
   useLoginMutation,
 } = api;
