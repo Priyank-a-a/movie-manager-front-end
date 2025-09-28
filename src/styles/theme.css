@@ -1,0 +1,114 @@
+/* Theme colors based on Figma design */
+:root {
+  /* Primary colors */
+  --primary-dark: #003845;
+  --primary-main: #00485B;
+  --primary-light: #005A70;
+  
+  /* Secondary colors */
+  --secondary-main: #2ECC71;
+  --secondary-light: #4CD787;
+  --secondary-dark: #28B463;
+  
+  /* Text colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #E0E0E0;
+  --text-disabled: #A0A0A0;
+  
+  /* Background colors */
+  --bg-dark: #003845;
+  --bg-main: #00485B;
+  --bg-light: #005A70;
+  --bg-input: rgba(255, 255, 255, 0.1);
+  
+  /* Additional colors */
+  --success: #2ECC71;
+  --error: #E74C3C;
+  --warning: #F39C12;
+  --info: #3498DB;
+
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* Shadows */
+  --shadow-1: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-2: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-3: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark theme is default */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Common components styling */
+.btn {
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--secondary-main);
+  color: var(--text-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-light);
+}
+
+.btn-primary:active {
+  background-color: var(--secondary-dark);
+}
+
+.card {
+  background-color: var(--bg-paper);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.input-field {
+  background-color: var(--bg-light);
+  border: 1px solid var(--primary-light);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.input-field:focus {
+  border-color: var(--secondary-main);
+  outline: none;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  color: var(--text-primary);
+}
+
+a {
+  color: var(--secondary-main);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
