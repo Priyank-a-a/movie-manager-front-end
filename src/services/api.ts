@@ -5,7 +5,7 @@ export const api = createApi({
   reducerPath: "api",
   tagTypes: ["Movies"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001", // NestJS backend
+    baseUrl: "http://13.211.8.154:3001", // NestJS backend
     prepareHeaders: (headers, { getState }) => {
       // Prefer cookie token (browser only); fallback to Redux state
       const cookieToken =
@@ -26,7 +26,10 @@ export const api = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map((m: any) => ({ type: "Movies" as const, id: m.id })),
+              ...result.map((m: any) => ({
+                type: "Movies" as const,
+                id: m.id,
+              })),
               { type: "Movies" as const, id: "LIST" },
             ]
           : [{ type: "Movies" as const, id: "LIST" }],
@@ -50,19 +53,20 @@ export const api = createApi({
       invalidatesTags: [{ type: "Movies", id: "LIST" }],
     }),
 
-    updateMovie: builder.mutation<any, { id: string | number; data: Partial<any> }>(
-      {
-        query: ({ id, data }) => ({
-          url: `/movies/${id}`,
-          method: "PUT",
-          body: data,
-        }),
-        invalidatesTags: (result, error, arg) => [
-          { type: "Movies", id: arg.id },
-          { type: "Movies", id: "LIST" },
-        ],
-      }
-    ),
+    updateMovie: builder.mutation<
+      any,
+      { id: string | number; data: Partial<any> }
+    >({
+      query: ({ id, data }) => ({
+        url: `/movies/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Movies", id: arg.id },
+        { type: "Movies", id: "LIST" },
+      ],
+    }),
 
     deleteMovie: builder.mutation<void, string | number>({
       query: (id) => ({
@@ -86,6 +90,17 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+
+    register: builder.mutation<
+      { token: string },
+      { username: string; email: string; password: string }
+    >({
+      query: (payload) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -96,4 +111,5 @@ export const {
   useDeleteMovieMutation,
   useUploadPosterMutation,
   useLoginMutation,
+  useRegisterMutation,
 } = api;

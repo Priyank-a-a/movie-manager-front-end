@@ -1,24 +1,25 @@
 "use client";
 
-import { useLoginMutation } from "@/services/api";
+import { useRegisterMutation } from "@/services/api";
 import { setToken } from "@/features/authSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import "./login.css";
+import "../login/login.css";
 import "@/styles/theme.css";
 
-const LoginSchema = Yup.object().shape({
+const SignupSchema = Yup.object().shape({
+  username: Yup.string().min(3).required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(4, "Too Short!").required("Required"),
 });
 
-export default function LoginPage() {
-  const [login, { isLoading }] = useLoginMutation();
+export default function SignupPage() {
+  const [registerUser, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -38,14 +39,15 @@ export default function LoginPage() {
 
   return (
     <div className="login-container">
-      <h1 className="login-title">Sign in</h1>
+      <h1 className="login-title">Sign up</h1>
 
       <Formik
-        initialValues={{ email: "", password: "", rememberMe: false }}
-        validationSchema={LoginSchema}
+        initialValues={{ username: "", email: "", password: "", rememberMe: false }}
+        validationSchema={SignupSchema}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
-            const res = await login({
+            const res = await registerUser({
+              username: values.username,
               email: values.email,
               password: values.password,
             }).unwrap();
@@ -55,21 +57,27 @@ export default function LoginPage() {
             });
             router.push("/movies");
           } catch (err: any) {
-            setErrors({ email: "Invalid credentials" });
+            setErrors({ email: "Registration failed" });
           } finally {
             setSubmitting(false);
           }
         }}
       >
-        {({
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          values,
-          isSubmitting,
-        }) => (
+        {({ errors, touched, handleChange, handleBlur, values }) => (
           <Form className="login-form">
+            <input
+              className="form-input"
+              placeholder="Username"
+              name="username"
+              type="text"
+              value={values.username}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {touched.username && errors.username && (
+              <div className="error-text">{errors.username}</div>
+            )}
+
             <input
               className="form-input"
               placeholder="Email"
@@ -106,45 +114,24 @@ export default function LoginPage() {
               Remember me
             </label>
 
-            <button
-              type="submit"
-              className="login-button"
-              // disabled={isLoading}
-            >
-              {/* {isLoading ? (
+            <button type="submit" className="login-button">
+              {isLoading ? (
                 <>
                   <span className="loading-spinner">
                     <CircularProgress size={16} color="inherit" />
                   </span>
-                  Logging in...
+                  Creating account...
                 </>
-              ) : ( */}
-              Login
-              {/* )} */}
+              ) : (
+                "Create account"
+              )}
             </button>
           </Form>
         )}
       </Formik>
 
-      <div style={{ marginTop: 16, textAlign: "center" }}>
-        <button
-          type="button"
-          className="login-button"
-          onClick={() => router.push("/signup")}
-          style={{ background: "transparent", border: "1px solid #fff" }}
-        >
-          Create a new account
-        </button>
-      </div>
-
-      {/* Wave effect at the bottom */}
       <div className="wave-container">
-        <svg
-          data-name="Layer 1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path
             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
             className="shape-fill"

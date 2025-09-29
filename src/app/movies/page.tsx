@@ -59,7 +59,7 @@ export default function MoviesPage() {
         poster:
           typeof m.poster === "string"
             ? m.poster.startsWith("/")
-              ? `http://localhost:3001${m.poster}`
+              ? `http://13.211.8.154:3001${m.poster}`
               : m.poster
             : "",
       }));
@@ -94,7 +94,7 @@ export default function MoviesPage() {
         const res = await uploadPoster(fd).unwrap();
         posterUrl = res.url.startsWith("http")
           ? res.url
-          : `http://localhost:3001${res.url}`;
+          : `http://13.211.8.154:3001${res.url}`;
       } else if (typeof movieData.poster === "string" && movieData.poster) {
         posterUrl = movieData.poster;
       }
@@ -121,7 +121,7 @@ export default function MoviesPage() {
         const res = await uploadPoster(fd).unwrap();
         posterUrl = res.url.startsWith("http")
           ? res.url
-          : `http://localhost:3001${res.url}`;
+          : `http://13.211.8.154:3001${res.url}`;
       } else if (typeof movieData.poster === "string" && movieData.poster) {
         posterUrl = movieData.poster;
       }
