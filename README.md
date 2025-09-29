@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movie Manager
+
+A responsive mobile-friendly web application for managing your personal movie collection. Create, update, and organize your favorite movies with ease.
+
+## Live Demo
+
+Access the application at: http://3.26.211.135:3000
+
+## Features
+
+- **User Authentication**: Secure login and registration system
+- **Movie Management**: Add, edit, and delete movies in your collection
+- **Movie Details**: Store movie titles, publishing years, and poster images
+- **Responsive Design**: Optimized for mobile and desktop viewing
+- **Image Upload**: Upload custom poster images for your movies
+- **Pagination**: Browse through your movie collection with ease
+
+## Technologies Used
+
+### Frontend
+
+- Next.js 15.5.4
+- React 19.1.0
+- TypeScript
+- Redux Toolkit for state management
+- Material UI components
+- Formik & Yup for form validation
+- CSS for styling
+
+### Backend
+
+- RESTful API integration
+- JWT authentication
+- File upload handling
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+
+   ```bash
+   git clone https://github.com/Priyank-a-a/movie-manager-front-end.git
+   cd movie-manager
+   ```
+
+2. Install dependencies
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Building for Production
 
 ```bash
-npm run dev
+npm run build
+npm start
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn build
+yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application is currently deployed on AWS EC2 free tier instance and can be accessed at: http://3.26.211.135:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+- `/src/app`: Next.js app directory containing page components
+- `/src/components`: Reusable React components
+- `/src/services`: API service integration
+- `/src/features`: Redux slices and state management
+- `/src/styles`: Global CSS styles
+- `/public`: Static assets
 
-To learn more about Next.js, take a look at the following resources:
+## Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run tests using Jest:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm test
+# or
+yarn test
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
