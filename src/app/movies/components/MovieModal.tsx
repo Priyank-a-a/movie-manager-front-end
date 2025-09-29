@@ -65,7 +65,6 @@ export default function MovieModal({
         poster: file,
       });
 
-      // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);

@@ -106,21 +106,8 @@ export default function LoginPage() {
               Remember me
             </label>
 
-            <button
-              type="submit"
-              className="login-button"
-              // disabled={isLoading}
-            >
-              {/* {isLoading ? (
-                <>
-                  <span className="loading-spinner">
-                    <CircularProgress size={16} color="inherit" />
-                  </span>
-                  Logging in...
-                </>
-              ) : ( */}
+            <button type="submit" className="login-button">
               Login
-              {/* )} */}
             </button>
           </Form>
         )}

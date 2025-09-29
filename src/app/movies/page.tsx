@@ -49,7 +49,6 @@ export default function MoviesPage() {
 
   const showEmptyState = false;
 
-  // Map API response (publishing_year) -> UI shape (publishingYear)
   const movies: Movie[] = showEmptyState
     ? []
     : (moviesData as any[]).map((m) => ({
@@ -99,7 +98,6 @@ export default function MoviesPage() {
         posterUrl = movieData.poster;
       }
 
-      // 2) Create movie with poster URL
       await createMovie({
         title: movieData.title,
         publishingYear: movieData.publishing_year,

@@ -1,4 +1,3 @@
-// src/lib/Providers.tsx
 "use client";
 
 import { Provider } from "react-redux";
@@ -12,7 +11,6 @@ export default function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   if (!mounted) {
-    // Render nothing on the server / before mount to prevent MUI className mismatch
     return null;
   }
   return (

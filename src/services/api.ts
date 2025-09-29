@@ -5,9 +5,8 @@ export const api = createApi({
   reducerPath: "api",
   tagTypes: ["Movies"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://13.211.8.154:3001", // NestJS backend
+    baseUrl: "http://13.211.8.154:3001",
     prepareHeaders: (headers, { getState }) => {
-      // Prefer cookie token (browser only); fallback to Redux state
       const cookieToken =
         typeof window !== "undefined" ? Cookies.get("token") : undefined;
       const stateToken = (getState() as any).auth?.token as string | undefined;
@@ -20,7 +19,6 @@ export const api = createApi({
     },
   }),
   endpoints: (builder) => ({
-    // Movies
     getMovies: builder.query<any[], void>({
       query: () => "/movies",
       providesTags: (result) =>
@@ -35,7 +33,6 @@ export const api = createApi({
           : [{ type: "Movies" as const, id: "LIST" }],
     }),
 
-    // Upload poster file, returns { url: string }
     uploadPoster: builder.mutation<{ url: string }, FormData>({
       query: (formData) => ({
         url: "/movies/upload",
@@ -79,7 +76,6 @@ export const api = createApi({
       ],
     }),
 
-    // Auth
     login: builder.mutation<
       { token: string },
       { email: string; password: string }
